@@ -6,10 +6,7 @@ data = open(input_file_name, 'r').read().split('\n')
 def is_report_safe(report) -> bool:
     is_ascending = None
 
-    for i in range(len(report)):
-        if i == 0:
-            continue
-
+    for i in range(1, len(report)):
         diff_step = abs(report[i]-report[i-1])
         if diff_step < 1 or diff_step > 3:
             return False
@@ -44,10 +41,7 @@ print("safe report count: ", safe_report_count)
 def get_first_fail_point(report):
     is_ascending = None
 
-    for i in range(len(report)):
-        if i == 0:
-            continue
-
+    for i in range(1, len(report)):
         diff_step = abs(report[i]-report[i-1])
         if diff_step < 1 or diff_step > 3:
             return i

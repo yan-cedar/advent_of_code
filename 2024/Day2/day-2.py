@@ -71,10 +71,11 @@ def get_first_fail_point(report):
 
 
 def is_report_damper_safe(report):
-    if is_report_safe(report):
+    fail_point = get_first_fail_point(report)
+
+    if fail_point is None:
         return True
 
-    fail_point = get_first_fail_point(report)
     while fail_point >= 0:
         damper_report = report[:fail_point] + report[fail_point+1:]
         if is_report_safe(damper_report):

@@ -53,12 +53,46 @@ def check_rule(order_facts, rule_orders):
 rule_orders = build_rule(rules)
 
 result = 0
+incorrect_updates = []
 
 for update in updates:
     update_list = update.split(',')
     order_facts = build_update_fact(update_list)
     if check_rule(order_facts, rule_orders):
-        print(f'update {update_list} follows the rule!')
         result += int(update_list[len(update_list)//2])
+    else:
+        incorrect_updates.append(update_list)
 
 print('Part 1 Result:', result)
+
+### part 2
+def fix_incorrect_update(incorrect_update, rule_orders):
+    correct_update = []
+
+    for update in incorrect_update:
+        if len(correct_update) == 0:
+            correct_update.append(update)
+            continue
+
+        for i in range(len(correct_update)):
+            if update in rule_orders[correct_update[i]]['before']:
+                correct_update.insert(i, update)
+                break
+
+        if update in correct_update:
+            continue
+
+        for i in range(len(correct_update)-1, -1, -1):
+            if update in rule_orders[correct_update[i]]['after']:
+                correct_update.insert(i+1, update)
+                break
+
+    return correct_update
+
+
+result = 0
+for incorrect_update in incorrect_updates:
+    correct_update = fix_incorrect_update(incorrect_update, rule_orders)
+    result += int(correct_update[len(correct_update) // 2])
+
+print('Result of Part 2:', result)
